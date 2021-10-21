@@ -33,7 +33,7 @@ end
 
 
 CT = C1_our*w.Household+C2_our*w.School+C3_our*w.Work+C4_our*w.General;
-C_vol = C4_our*w.General;
+C_vol = C4_our*w.General+0.3*C3_our*w.Work;
 
 %% Percentage of contacts that are reductible
 
