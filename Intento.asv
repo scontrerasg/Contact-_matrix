@@ -22,6 +22,7 @@ C1_our = zeros(6,6);
 C2_our = zeros(6,6);
 C3_our = zeros(6,6);
 C4_our = zeros(6,6);
+Mi_our = zeros(6,1);
 for i = 1:6
     for j = 1:6
         C1_our(i,j) = sum(C1(ind(i):ind(i+1),ind(j):ind(j+1)),'all');
@@ -33,9 +34,15 @@ end
 
 
 CT = C1_our*w.Household+C2_our*w.School+C3_our*w.Work+C4_our*w.General;
-C_vol = C4_our*w.General;
+rho = max(eig(CT));
+%C_vol = 0.7*C4_our*w.General+0.2*C3_our*w.Work+0.1*C2_our*w.School;
+
+C_vol           = (1/3) * C3_our*w.Work + (1/2) * C4_our*w.General;
+C_NPI_work      = (1/3) * C3_our*w.Work + (1/2) * C4_our*w.General;
+C_NPI_School    = C2_our*w.School;
+C_Base          = C1_our*w.Household +(1/3) * C3_our*w.Work;
 
 %% Percentage of contacts that are reductible
 
-p = CT./C_vol
-writematrix(p,'reductible_contacts.csv') 
+p = sum(C_vol,2)./sum(CT,2)
+%writematrix(p,'reductible_contacts.csv') 
